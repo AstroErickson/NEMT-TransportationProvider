@@ -13,7 +13,7 @@ import {
 } from "@react-pdf/renderer";
 import { PDFViewer } from "@react-pdf/renderer";
 import { getCompanyLegalName, getCompanyDBAName, getProviderType, getCompanyPhone, getCompanyEmail, getCompanyAddress, getCompanyOwnerName, getCompanyOwnerPhone, getCompanyBusinessLicenseNumber, getCompanyOwnerEmail, getCompanyServicingAddress, getCompanyContractedTransdev, getMedicaidProviderID, getNationalProviderNumber, getFederalEmployerID, getContractedDrivers, getContractedVehicles, getYourName, getYourTitle, getSignatureName, getVehicleRoster, getOperatingCounties } from "../data/registrationData";
-import { getDriverRoster, getDriverRosterName, getPortalRequest, getVehicleRosterName } from "../data/registrationData";
+import { getDriverRoster, getDriverRosterName, getPortalRequest, getVehicleRosterName, getSignature } from "../data/registrationData";
 import { PDFDocument, StandardFonts } from "pdf-lib";
 import { pdfjs } from "react-pdf";
 import fontkit from "@pdf-lib/fontkit";
@@ -109,6 +109,12 @@ const saveFile = () => {
         saveAs(pdfBlob, "TransportationProvider.pdf");
     }
 };
+const DisplaySignature = ({ signature }) => (
+  <Image
+    src={signature}
+    style={{ width: 200, height: 50, border: '1px solid black', marginTop: 5 }}
+  />
+);
     const createTableRow = (value) => {
         let tableColStyle = {
             width: "100%",
@@ -141,6 +147,7 @@ const saveFile = () => {
     const rowtwelve = "Driver Roster File Name: " + getDriverRosterName() + " Vehicle Roster File Name: " + getVehicleRosterName();
     const rowthirteen = " Operating Counties: " + getOperatingCounties() + " Portal Registration Request File Name: " + getPortalRequest().name;
     const rowfourteen = "Your Name: " + getYourName() + " Your Title: " + getYourTitle() + " Signature Name: " + getSignatureName();
+    const rowfifteen = "Signature: " + getSignature();
 
     const mergePDFHandler = async (files, textFiles) => {
         const mergedPdf = await PDFDocument.create();
@@ -239,6 +246,10 @@ const saveFile = () => {
                         {createTableRow(rowthirteen)}
                         <br />
                         {createTableRow(rowfourteen)}
+                        <br />
+                        <View style={{ flexDirection: "row", alignItems: "cemter", width: "100%"}}>
+                            <DisplaySignature signature={getSignature()} />
+                            </View>
                         <br />
                     </View>
                 </Page>
